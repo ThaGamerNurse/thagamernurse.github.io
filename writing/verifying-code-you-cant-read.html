@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>How do you verify 64,000 lines you can't read?</title>
+<meta name="description" content="A registered nurse with no programming background had AI build an EMR. The hard problem was not getting good code out of the model. It was checking work he cannot read.">
+<link rel="canonical" href="https://thagamernurse.github.io/writing/verifying-code-you-cant-read.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://thagamernurse.github.io/writing/verifying-code-you-cant-read.html">
+<meta property="og:title" content="How do you verify 64,000 lines you can't read?">
+<meta property="og:description" content="Everyone is focused on getting the model to write good code. The harder question is what you do when it has written a great deal of it and you have no way to check.">
+<meta property="og:image" content="https://thagamernurse.github.io/img/og-essay.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How do you verify 64,000 lines you can't read?">
+<meta name="twitter:description" content="Everyone is focused on getting the model to write good code. The harder question is checking work you cannot read.">
+<meta name="twitter:image" content="https://thagamernurse.github.io/img/og-essay.jpg">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E">
+
+<style>
+:root{
+  --w:#ffffff; --w2:#fafafa; --k:#000000;
+  --ink:#1d1d1f; --ink2:#6e6e73; --ink3:#86868b;
+  --pale:#f5f5f7; --pale2:#86868b;
+  --blue:#0066cc; --blueD:#2997ff;
+  --line:#d2d2d7; --lineD:#2a2a2c;
+  --sf:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --pad:clamp(1.25rem,5vw,2.5rem);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sf);background:var(--w);color:var(--ink);
+  font-size:19px;line-height:1.6;letter-spacing:-.011em;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+
+nav{position:sticky;top:0;z-index:60;height:48px;
+  background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+.navin{max-width:1024px;margin:0 auto;height:100%;padding:0 var(--pad);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.navin a.home{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--ink);
+  white-space:nowrap;flex:0 0 auto}
+.navin a.home:hover{text-decoration:none;opacity:.7}
+.navin .back{font-size:13px;color:var(--ink2);white-space:nowrap}
+
+/* Long-form measure: narrower than the landing page on purpose. */
+.wrap{max-width:44rem;margin:0 auto;padding:0 var(--pad)}
+
+header.post{padding:clamp(3.5rem,9vw,6rem) 0 clamp(1.75rem,4vw,2.5rem)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:1.25rem}
+h1{font-size:clamp(34px,6.4vw,56px);line-height:1.06;letter-spacing:-.028em;
+  font-weight:700;text-wrap:balance}
+.standfirst{font-size:clamp(19px,2.4vw,23px);line-height:1.5;color:var(--ink2);
+  margin-top:1.35rem;letter-spacing:-.014em}
+.byline{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:1.75rem;
+  padding-top:1.35rem;border-top:1px solid var(--line);
+  font-size:14px;color:var(--ink3);font-family:var(--mono);letter-spacing:.02em}
+.byline b{font-weight:500;color:var(--ink2)}
+
+article{padding-bottom:clamp(3rem,7vw,5rem)}
+article p{margin:1.35rem 0}
+article h2{font-size:clamp(24px,3.4vw,32px);line-height:1.15;letter-spacing:-.022em;
+  font-weight:700;margin:clamp(2.75rem,6vw,4rem) 0 .25rem;text-wrap:balance}
+article h2 .n{font-family:var(--mono);font-size:.55em;color:var(--blue);
+  letter-spacing:.06em;margin-right:.55rem;font-weight:500;vertical-align:.15em}
+article em{font-style:italic}
+article strong{font-weight:600}
+article code{font-family:var(--mono);font-size:.86em;background:var(--w2);
+  border:1px solid var(--line);border-radius:5px;padding:.1em .35em}
+hr{border:0;border-top:1px solid var(--line);margin:clamp(2.75rem,6vw,4rem) 0}
+
+/* The line each section is really about. */
+.kicker{font-size:clamp(20px,2.6vw,25px);line-height:1.4;letter-spacing:-.016em;
+  color:var(--ink);font-weight:500;margin:1.75rem 0;padding-left:1.15rem;
+  border-left:3px solid var(--blue)}
+
+.callout{background:var(--w2);border:1px solid var(--line);border-radius:14px;
+  padding:clamp(1.25rem,3vw,1.75rem);margin:2rem 0}
+.callout p{margin:0}
+.callout p + p{margin-top:.9rem}
+.callout .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:.6rem}
+
+.end{background:var(--k);color:var(--pale);margin-top:clamp(2rem,5vw,3rem);
+  padding:clamp(3rem,7vw,4.5rem) 0}
+.end .wrap{max-width:44rem}
+.end h3{font-size:clamp(24px,3.6vw,34px);line-height:1.1;letter-spacing:-.024em;
+  font-weight:700;text-wrap:balance}
+.end p{color:var(--pale2);margin-top:1.1rem;font-size:18px}
+.cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--blueD);
+  color:#000;border-radius:980px;padding:.7rem 1.35rem;font-size:16px;letter-spacing:-.01em;
+  border:0;font-family:var(--sf);cursor:pointer}
+.btn:hover{background:#5eb0ff;text-decoration:none}
+.btn2{background:none;border:1px solid #48484a;color:var(--pale)}
+.btn2:hover{background:rgba(255,255,255,.08)}
+
+footer{padding:clamp(2.5rem,5vw,3.5rem) 0;font-size:13px;color:var(--ink3);
+  background:var(--w2);border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav><div class="navin">
+  <a class="home" href="/">Andrew Gaston</a>
+  <a class="back" href="/">Back to the work</a>
+</div></nav>
+
+<header class="post"><div class="wrap">
+  <p class="eyebrow">Writing</p>
+  <h1>How do you verify 64,000 lines you can't read?</h1>
+  <p class="standfirst">Everyone is focused on getting the model to write good code.
+    The harder question is what you do when it has written a great deal of it and you have
+    no way to check.</p>
+  <p class="byline"><b>Andrew Gaston</b> <span>&middot;</span> <span>27 July 2026</span>
+    <span>&middot;</span> <span>7 min read</span></p>
+</div></header>
+
+<article><div class="wrap">
+
+  <p>I'm a registered nurse. I run operations at a small primary care practice in
+    Philadelphia. Over the last few months I've had AI build an EMR for that practice: about
+    64,000 lines, 1,657 passing backend tests, FHIR R4, C-CDA, QRDA, X12 835 remittance
+    handling. I also have a trading agent running against a live brokerage account, and five
+    games.</p>
+
+  <p>I cannot read any of it. Not really. I can follow a function if I sit with it, but I
+    could not review a pull request and tell you whether it was correct.</p>
+
+  <p>That turns out to be the actual problem, and almost nobody talks about it. Here is what
+    I ended up building to answer it. Most of it I arrived at by getting burned.</p>
+
+  <hr>
+
+  <h2>The thing that doesn't work: reading the summary</h2>
+  <p>Early on I did what everybody does. The model finishes, tells me what it did, and I nod.
+    This fails in a specific and nasty way: the summary is generated by the same process that
+    wrote the code. If it misunderstood the task, the summary will confidently describe the
+    misunderstanding. It is not lying. It genuinely believes it.</p>
+  <p class="kicker">You need a check that does not come from the thing being checked.</p>
+
+  <h2><span class="n">01</span>Pay someone to disagree</h2>
+  <p>When a review turns up a problem, I don't accept the finding. I hand it to separate
+    agents whose entire job is to disprove it, prompted to default to "refuted" when
+    uncertain. If most of them succeed, the finding gets thrown out.</p>
+  <p>This sounds like overhead. It is the highest-value thing in the whole setup. A single
+    reviewing agent generates findings that are plausible, well written, and frequently
+    wrong, and if you act on all of them you spend your week fixing imaginary bugs and
+    introducing real ones. Twelve audit rounds on the EMR produced 53 defects that survived
+    refutation. The raw count before refutation was much higher.</p>
+  <p>It works best when the verifiers get <em>different lenses</em> rather than being three
+    copies of the same skeptic. A security reviewer, a performance reviewer, and someone
+    whose only job is "does this actually reproduce" catch different things.</p>
+
+  <h2><span class="n">02</span>Audit by outcome, never by phrase</h2>
+  <p>This one cost me weeks before I understood it.</p>
+  <p>I gave a correction about when the agent was allowed to sell a position. It updated the
+    rule I pointed at, swept the rest of the rulebook for related wording, and found nothing.
+    Clean, done.</p>
+  <p>Except a completely different rule, about never averaging down into a falling knife,
+    could starve a position of money just as effectively as the sell rule could. It never
+    used the word "sell." It never used the word "gate." It survived two audits untouched,
+    because both audits searched for the <em>words</em> in my correction rather than the
+    <em>outcome</em> I was trying to prevent.</p>
+  <p class="kicker">State the forbidden outcome in one sentence, then find every rule with
+    the power to cause it, whatever vocabulary it uses.</p>
+  <p>Grepping for the old wording is not the same activity, and never was.</p>
+
+  <h2><span class="n">03</span>A correction with no check will be forgotten</h2>
+  <p>Every time I correct something, two things happen in the same session. The rule goes
+    into the file that governs that behavior, and a check gets added that fails if the old
+    behavior ever comes back.</p>
+
+  <div class="callout">
+    <span class="lbl">Why the second part exists</span>
+    <p>I have a locked rule that says no dollar amounts in one of my billing reference files,
+      because a stale fee schedule is worse than no fee schedule. The check for it matched
+      <code>$</code> followed by a digit. So writing a bare <code>142.60</code> with no dollar
+      sign sailed straight through.</p>
+    <p>The gate had a hole in it for its entire life. I found out by noticing that my own new
+      entries passed when they should have failed. When I fixed it to catch money-shaped
+      numbers, it immediately surfaced a real leak that had been sitting there for weeks.</p>
+  </div>
+
+  <p class="kicker">A gate that has never failed may simply never have been able to.</p>
+
+  <h2><span class="n">04</span>Write state down, or every session starts from zero</h2>
+  <p>There's one document that every session reads before it does anything, and writes back
+    to the moment it learns something. Current state, standing decisions, and a log of what
+    went wrong and why.</p>
+  <p>It fixes two failure modes. The first is obvious: a fresh session re-deriving context
+    you already paid for, or worse, re-litigating a decision you already made.</p>
+  <p>The second is subtler and much worse. A correction that only lives in a chat log gets
+    <em>overwritten</em>. I once corrected a policy, the correction went into a session note,
+    and four weeks later a different document confidently asserted the opposite version. That
+    wrong version then got baked into an automated routine, which spent every Monday flagging
+    legitimate work as a violation. Roughly a month of compounding error from one correction
+    that never reached a permanent home.</p>
+  <p>One caveat I learned the hard way: the state document is not evidence. It records what
+    was true when someone wrote it. A single typo in mine, one transposed digit in a billing
+    code, generated a task that ran for eight days before anything checked it against actual
+    claims data and found the code didn't exist.</p>
+
+  <h2><span class="n">05</span>Route by cost, in both directions</h2>
+  <p>Mechanical work goes to a small fast model: renames, extraction, formatting, counting,
+    running the test suite and summarizing failures. Work in an established pattern with a
+    clear spec goes to a mid-tier model. Architecture, ambiguous debugging, security
+    invariants, schema changes, and every final review go to the strongest model available.</p>
+  <p>The part people skip is that it runs <em>both</em> directions. A small model facing a
+    judgment call is supposed to escalate rather than guess. And anything touching money,
+    health data, credentials, or a deployment goes to the top tier regardless of how small
+    the change looks.</p>
+
+  <hr>
+
+  <h2>The failure that convinced me all of this was necessary</h2>
+  <p>Late in the build, an end-to-end audit found that five services in the EMR had a
+    fallback: when they couldn't determine who performed an action, they defaulted to a
+    hardcoded physician name.</p>
+  <p>As a log label that's sloppy. But some of those paths wrote to <em>persisted
+    attestations</em>: who signed a note, who authored an addendum, who ordered a test, who
+    reconciled a record. A signature attributed to a specific named doctor who did not sign
+    it is a forgery, and it is indistinguishable in the database from a real one.</p>
+  <p>No test caught it, because every test passed. The code did exactly what it said. It was
+    correct and it was catastrophic, and it sat there through eleven prior audit rounds that
+    read the code rather than driving the app.</p>
+  <p>The fix wasn't renaming the constant. There's now a test that scans the whole service
+    layer and fails if any person-shaped actor name reappears anywhere.</p>
+  <p class="kicker">Gate the class, not the symptom, because the symptom will come back
+    wearing a different name.</p>
+
+  <hr>
+
+  <h2>What this doesn't solve</h2>
+  <p>I still can't read the code. Nothing here changes that. What it changes is that I'm no
+    longer relying on my ability to read it.</p>
+  <p>It's slower than letting the model run. Adversarial verification roughly doubles the
+    cost of a review round. Writing a check for every correction is genuinely tedious. I do
+    it because the alternative failure mode, in a system that will hold real patient charts,
+    isn't a bug.</p>
+  <p>And it does not make me a software engineer. It makes me someone who built a governance
+    system around a tool, which is a different skill, and one I think a lot more people are
+    about to need.</p>
+
+</div></article>
+
+<section class="end"><div class="wrap">
+  <h3>I want to build the next one with other people.</h3>
+  <p>If any of this is your area, especially if you've taken health software from prototype
+    to certified and deployed, or if you work on agent safety and want to try to break mine,
+    I'd like to hear from you.</p>
+  <div class="cta">
+    <button class="btn" type="button" id="mailbtn">Email me</button>
+    <a class="btn btn2" href="/">See the work</a>
+    <a class="btn btn2" href="https://github.com/ThaGamerNurse" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Andrew Gaston, Philadelphia, PA</span>
+  <span>Published 27 July 2026</span>
+</div></footer>
+
+<script>
+(function(){
+  // Assembled from char codes on click only, so the address is never in the
+  // source, never in the rendered text, and never in the DOM until a human asks.
+  var b=document.getElementById('mailbtn');
+  if(!b) return;
+  var u=[97,110,100,114,101,119,46,103,97,115,116,111,110,48],
+      d=[103,109,97,105,108,46,99,111,109];
+  b.addEventListener('click',function(){
+    var f=String.fromCharCode;
+    window.location.href=f(109,97,105,108,116,111,58)+f.apply(null,u)+f(64)+f.apply(null,d);
+  });
+})();
+</script>
+</body>
+</html>
