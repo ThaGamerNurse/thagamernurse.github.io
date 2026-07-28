@@ -53,6 +53,8 @@ nav{
   -webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid rgba(0,0,0,.08);
 }
+.skiplink{position:absolute;left:-9999px;top:0;z-index:99;background:var(--k);color:#fff;padding:.7rem 1.1rem;border-radius:0 0 8px 0;font-size:14px}
+.skiplink:focus{left:0;text-decoration:none}
 .navin{
   max-width:1024px;margin:0 auto;height:100%;padding:0 var(--pad);
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
@@ -159,7 +161,7 @@ figure{margin:0}
 @media (max-width:620px){.layer{grid-template-columns:minmax(0,1fr)}}
 .layer .n{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--blueD);
   padding-top:.25rem;white-space:nowrap}
-.layer h4{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-bottom:.35rem}
+.layer h3{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-bottom:.35rem}
 .layer p{font-size:15px;color:var(--pale2);line-height:1.5}
 
 /* ---------- pill / cta ---------- */
@@ -188,7 +190,7 @@ figure{margin:0}
   margin-top:clamp(2.25rem,5vw,3.25rem)}
 .card{background:var(--w);border:1px solid var(--line);border-radius:18px;
   padding:clamp(1.25rem,2.6vw,1.75rem)}
-.card h4{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-bottom:.5rem}
+.card h3{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-bottom:.5rem}
 .card p{font-size:15px;color:var(--ink2);line-height:1.5}
 
 /* ---------- footer ---------- */
@@ -207,6 +209,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:980px;
   padding:.5rem 1rem;font-size:14px;font-family:var(--sf);cursor:pointer}
 .lbx:hover{background:rgba(255,255,255,.24)}
+.lbnav{position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.12);border:0;color:#fff;cursor:pointer;
+  width:52px;height:52px;border-radius:50%;font-size:22px;line-height:1;
+  display:grid;place-items:center;font-family:var(--sf)}
+.lbnav:hover{background:rgba(255,255,255,.26)}
+.lbnav[disabled]{opacity:.25;cursor:default}
+.lbprev{left:clamp(.5rem,2vw,1.75rem)}
+.lbnext{right:clamp(.5rem,2vw,1.75rem)}
+.lbcount{position:absolute;bottom:clamp(.75rem,2vw,1.5rem);left:0;right:0;text-align:center;
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:#9aa}
+@media (max-width:640px){.lbnav{width:44px;height:44px;font-size:19px}}
 
 /* ---------- motion ---------- */
 .rv{opacity:0;transform:translateY(24px)}
@@ -218,6 +231,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
 }
 </style>
 
+<a class="skiplink" href="#pointcare">Skip to content</a>
 <nav>
   <div class="navin">
     <b>Andrew Gaston</b>
@@ -232,6 +246,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   </div>
 </nav>
 
+<main>
+
 <!-- ============ HERO ============ -->
 <section class="hero dark">
   <div class="wrap center">
@@ -241,9 +257,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
       running against a live brokerage account, and an online co-op game you can play
       right now. All of it built by directing AI.</p>
     <div class="marks">
-      <figure><img src="img/logo-apc.png" alt="Adaptive PointCare mark" width="300" height="300"><span class="lbl">Adaptive PointCare</span></figure>
-      <figure><img src="img/logo-gq.png" alt="Gaston Quant mark" width="320" height="191"><span class="lbl">Gaston Quant</span></figure>
-      <figure><img src="img/logo-j3ga.png" alt="J3GA logo" width="640" height="245"><span class="lbl">J3GA</span></figure>
+      <figure><img src="img/logo-apc.png" alt="Adaptive PointCare" width="300" height="300"><span class="lbl">Adaptive PointCare</span></figure>
+      <figure><img src="img/logo-gq.png" alt="Gaston Quant" width="320" height="191"><span class="lbl">Gaston Quant</span></figure>
+      <figure><img src="img/logo-j3ga.png" alt="J3GA" width="640" height="245"><span class="lbl">J3GA</span></figure>
     </div>
   </div>
 </section>
@@ -262,7 +278,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   <div class="wide rv">
     <div class="figrow">
       <figure>
-        <button class="shot" type="button"><img src="img/emr-02-home.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Start the day"><img src="img/emr-02-home.jpg" loading="lazy"
           alt="Home dashboard showing the day's schedule, inbox counts and outstanding care gaps." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">01</span><span class="capk">Start the day.</span> Everything that needs doing, on one screen, before the first patient.</figcaption>
       </figure>
@@ -271,27 +287,27 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     <p class="grouplabel">During the visit</p>
     <div class="figrow g2">
       <figure>
-        <button class="shot" type="button"><img src="img/emr-03-schedule.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Check the day"><img src="img/emr-03-schedule.jpg" loading="lazy"
           alt="Daily schedule with appointment slots, patient names and visit types." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">02</span><span class="capk">Check the day.</span> Who is coming, with eligibility and copay verified before they arrive.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-06-chart-facesheet.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Open the chart"><img src="img/emr-06-chart-facesheet.jpg" loading="lazy"
           alt="Patient face sheet with allergies, medications carrying RxCUI codes, an HCC-tagged problem list, family and social history, care gaps and vaccinations." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">03</span><span class="capk">Open the chart.</span> Allergies, medications, and a problem list tagged with the risk categories it feeds, so coding is visible while you work.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-08-orders.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Order what is needed"><img src="img/emr-08-orders.jpg" loading="lazy"
           alt="Orders workspace listing laboratory, imaging and referral orders with status." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">04</span><span class="capk">Order what is needed.</span> Labs, imaging and referrals, each with where it currently stands.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-09-billing.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: The claim builds itself"><img src="img/emr-09-billing.jpg" loading="lazy"
           alt="Billing workspace with total billed, outstanding, collected and denied, plus a claim worklist with status filters." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">05</span><span class="capk">The claim builds itself.</span> Sign the note and the charge is already there, scrubbed before it goes out.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-27-payer-claims.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: See what the payer did"><img src="img/emr-27-payer-claims.jpg" loading="lazy"
           alt="Payer claims feed showing adjudicated claims pulled back from the payer." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">06</span><span class="capk">See what the payer did.</span> Adjudicated claims read back in, so the record reflects the payer's answer and not your assumption.</figcaption>
       </figure>
@@ -300,32 +316,32 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     <p class="grouplabel">Between visits, where value-based care is actually won</p>
     <div class="figrow g2">
       <figure>
-        <button class="shot" type="button"><img src="img/emr-12-risk-strata.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Work the rising cohort"><img src="img/emr-12-risk-strata.jpg" loading="lazy"
           alt="Risk stratification screen: a population risk pyramid with high, rising and low risk counts, a chart of what is driving the rising cohort, and a patient table with RAF scores and open care gaps." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">07</span><span class="capk">Work the rising cohort.</span> The patients trending toward high cost, with the clinical drivers behind the trend.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-17-raf-recapture.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Recapture the risk"><img src="img/emr-17-raf-recapture.jpg" loading="lazy"
           alt="RAF recapture worklist showing suspected conditions, the clinical basis for each, and current versus prior risk values." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">08</span><span class="capk">Recapture the risk.</span> Conditions suspected from claims and clinical evidence, each showing why it was suspected.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-10-population-health.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Zoom out"><img src="img/emr-10-population-health.jpg" loading="lazy"
           alt="Population health dashboard with cohort counts and quality measure performance." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">09</span><span class="capk">Zoom out.</span> The whole panel at once, rather than one chart at a time.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-20-quality-reporting.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Report quality"><img src="img/emr-20-quality-reporting.jpg" loading="lazy"
           alt="Quality reporting screen showing measure performance and submission readiness." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">10</span><span class="capk">Report quality.</span> Measures computed from documentation as it is written, not reconstructed at year end.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-19-ccm.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Manage between visits"><img src="img/emr-19-ccm.jpg" loading="lazy"
           alt="Chronic care management worklist with enrolled patients and time tracking." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">11</span><span class="capk">Manage between visits.</span> Chronic care time tracked against the thresholds that make it billable.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/emr-22-scan-upload.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Handle the paper"><img src="img/emr-22-scan-upload.jpg" loading="lazy"
           alt="Scan and upload screen with a document queue, label catalog and routing options." width="1200" height="750"></button>
         <figcaption class="cap"><span class="stepn">12</span><span class="capk">Handle the paper.</span> Documents labelled and routed to the right inbox, surviving a reload mid-upload.</figcaption>
       </figure>
@@ -360,21 +376,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     <div class="layers">
       <div class="layer">
         <span class="n">LAYER 1</span>
-        <div><h4>The broker refuses</h4>
+        <div><h3>The broker refuses</h3>
         <p>Eight of nine accounts reject orders server-side. The one tradeable account is
           cash-only, so leverage is unavailable rather than merely disallowed, and the option
           level does not permit spreads.</p></div>
       </div>
       <div class="layer">
         <span class="n">LAYER 2</span>
-        <div><h4>The code refuses</h4>
+        <div><h3>The code refuses</h3>
         <p>A sell requires a token minted by a human, valid 120 seconds, bound to a hash of
           that exact order. Nothing on an agent path can mint one, so the trading loop is
           refused the same way a stranger would be.</p></div>
       </div>
       <div class="layer">
         <span class="n">LAYER 3</span>
-        <div><h4>The rules refuse</h4>
+        <div><h3>The rules refuse</h3>
         <p>A strategy file can tune entry and sizing. It is rejected outright if it so much as
           names a safety rule, so installing a strategy can never mean disabling a safeguard.</p></div>
       </div>
@@ -382,7 +398,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
 
     <div class="figrow" style="margin-top:clamp(2.5rem,5vw,3.5rem)">
       <figure>
-        <button class="shot" type="button"><img src="img/gq-01-portfolio.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: The book, with the numbers hidden"><img src="img/gq-01-portfolio.jpg" loading="lazy"
           alt="Gaston Quant portfolio view: total value, day change, buying power and a positions table with tickers, sparklines and percentages, every dollar figure and share count replaced by asterisks." width="1300" height="902"></button>
         <figcaption class="cap"><span class="capk">The book, with the numbers hidden.</span> Every dollar
           and every share count is masked. Tickers, percentages and the shape of the day stay visible, so
@@ -391,25 +407,25 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     </div>
     <div class="figrow g2">
       <figure>
-        <button class="shot" type="button"><img src="img/gq-04-filings.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: SEC filings"><img src="img/gq-04-filings.jpg" loading="lazy"
           alt="SEC filings view sorting insider sales into discretionary, 10b5-1 plan and vesting, with per-company filing history." width="1300" height="902"></button>
         <figcaption class="cap"><span class="capk">SEC filings.</span> Insider sales split into the ones
           that mean something and the ones that are just payroll.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/gq-02-dividends.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Dividends"><img src="img/gq-02-dividends.jpg" loading="lazy"
           alt="Dividend projection view with forward income, yields and a twelve month income calendar." width="1300" height="902"></button>
         <figcaption class="cap"><span class="capk">Dividends.</span> Forward income across every readable
           account, with the yield computed rather than taken from the broker, which reports it wrong.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/gq-03-earnings.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Earnings"><img src="img/gq-03-earnings.jpg" loading="lazy"
           alt="Earnings calendar showing dated catalysts for held names and which are inside a blackout." width="1300" height="902"></button>
         <figcaption class="cap"><span class="capk">Earnings.</span> Which names are inside a blackout and
           why, so nothing gets bought into a print.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/gq-05-stocks.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Per name"><img src="img/gq-05-stocks.jpg" loading="lazy"
           alt="Stocks view with per-holding detail and analysis." width="1300" height="902"></button>
         <figcaption class="cap"><span class="capk">Per name.</span> Range position, RSI, the peer tape, and
           a written read that takes a position instead of listing numbers.</figcaption>
@@ -445,13 +461,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   <div class="wide rv">
     <div class="figrow">
       <figure>
-        <button class="shot" type="button"><img src="img/j3ga-key.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: The cast"><img src="img/j3ga-key.jpg" loading="lazy"
           alt="Key art: the four J3GA heroes standing together, each wrapped in their element. Lightning, ice, fire and earth." width="1300" height="677"></button>
         <figcaption class="cap"><span class="capk">The cast.</span> Me and three friends, which is the
           whole reason the game exists.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/es-5-skills.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Level up"><img src="img/es-5-skills.jpg" loading="lazy"
           alt="Element Survivors gameplay: the hero Angel surrounded by enemies on a grass field, with three lightning skill-tree upgrade cards offered on level up." width="1300" height="812"></button>
         <figcaption class="cap"><span class="capk">Level up.</span> Three cards from your hero's own skill
           tree, with rerolls and banishes, so no two runs build the same character.</figcaption>
@@ -459,25 +475,25 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     </div>
     <div class="figrow g2">
       <figure>
-        <button class="shot" type="button"><img src="img/es-1-select.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Four heroes"><img src="img/es-1-select.jpg" loading="lazy"
           alt="Element Survivors character select: Angel with lightning, Blaze with fire, Frost with ice and Quake with earth, each with a play style summary." width="1300" height="731"></button>
         <figcaption class="cap"><span class="capk">Four heroes.</span> Lightning, fire, ice and earth, each
           with a different play style and its own skill tree.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/es-2-swarm.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: You move, it fires"><img src="img/es-2-swarm.jpg" loading="lazy"
           alt="Element Survivors gameplay showing the hero attacking automatically as enemies close in." width="1300" height="731"></button>
         <figcaption class="cap"><span class="capk">You move, it fires.</span> Positioning is the whole
           game.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/es-3-mid.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: It escalates"><img src="img/es-3-mid.jpg" loading="lazy"
           alt="Element Survivors mid-run with a denser wave of enemies and experience gems on the field." width="1300" height="731"></button>
         <figcaption class="cap"><span class="capk">It escalates.</span> Waves get denser until the boss
           timer fires.</figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button"><img src="img/es-6-store.jpg" loading="lazy"
+        <button class="shot" type="button" aria-label="Enlarge: Permanent progression"><img src="img/es-6-store.jpg" loading="lazy"
           alt="Element Survivors store showing permanent upgrades for offense, survival and utility, plus account perks and stage unlocks." width="1300" height="731"></button>
         <figcaption class="cap"><span class="capk">Permanent progression.</span> Coins from every run buy
           upgrades that carry into the next one.</figcaption>
@@ -507,16 +523,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   </div>
   <div class="wrap rv">
     <div class="cards">
-      <div class="card"><h4>State that survives</h4>
+      <div class="card"><h3>State that survives</h3>
         <p>One document every session reads before it starts and writes back to the moment it
           learns something. Nothing begins cold, and a correction never lives only in a chat log.</p></div>
-      <div class="card"><h4>Cheapest model that can do it</h4>
+      <div class="card"><h3>Cheapest model that can do it</h3>
         <p>Mechanical work goes to a small fast model, judgment goes to the strongest one, and
           anything touching money, health data or a deployment always goes up.</p></div>
-      <div class="card"><h4>Someone tries to knock it down</h4>
+      <div class="card"><h3>Someone tries to knock it down</h3>
         <p>Findings get handed to separate agents told to disprove them. If most succeed, the
           finding is thrown out. That is why twelve audit rounds produced 53 defects that were real.</p></div>
-      <div class="card"><h4>Corrections get a check</h4>
+      <div class="card"><h3>Corrections get a check</h3>
         <p>A correction goes into the rules file the same day, with an automated test that fails
           if the old mistake ever comes back.</p></div>
     </div>
@@ -549,6 +565,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <span>Andrew Gaston, Philadelphia, PA</span>
@@ -557,10 +575,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
 </footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged screenshot">
-  <button class="lbx" id="lbx" type="button">Close</button>
+  <button class="lbx" id="lbx" type="button">Close &middot; Esc</button>
+  <button class="lbnav lbprev" id="lbprev" type="button" aria-label="Previous screenshot">&#8249;</button>
+  <button class="lbnav lbnext" id="lbnext" type="button" aria-label="Next screenshot">&#8250;</button>
   <figure style="margin:0;display:grid;place-items:center">
     <img id="lbi" alt=""><figcaption id="lbc"></figcaption>
   </figure>
+  <p class="lbcount" id="lbn"></p>
 </div>
 
 <script>
@@ -579,40 +600,62 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
 })();
 
 (function(){
-  // Screenshots are shown scaled down, so full size is where the UI is legible.
+  // The point of this site is letting someone actually review the work, so the
+  // lightbox pages through a section's screenshots instead of opening one and
+  // closing. Arrows are scoped to the section you opened from: paging out of the
+  // EMR into the trading app mid-review would be disorienting.
   var lb=document.getElementById('lb'), lbi=document.getElementById('lbi'),
-      lbc=document.getElementById('lbc'), lbx=document.getElementById('lbx'), opener=null;
+      lbc=document.getElementById('lbc'), lbx=document.getElementById('lbx'),
+      prev=document.getElementById('lbprev'), next=document.getElementById('lbnext'),
+      count=document.getElementById('lbn'),
+      group=[], idx=0, opener=null;
+
+  function capOf(btn){
+    var fig=btn.closest('figure'); var cap=fig && fig.querySelector('.cap');
+    if(!cap) return '';
+    var txt=cap.textContent.trim();
+    // The step number is its own inline span, so textContent glues it to the
+    // caption ("02Check the day"). Put the separator back.
+    var n=cap.querySelector('.stepn');
+    if(n){ var num=n.textContent.trim();
+           if(txt.indexOf(num)===0) txt=num+'  '+txt.slice(num.length).trim(); }
+    return txt;
+  }
+  function show(i){
+    idx=i;
+    var btn=group[idx], img=btn.querySelector('img');
+    lbi.src=img.currentSrc||img.src; lbi.alt=img.alt;
+    lbc.textContent=capOf(btn);
+    count.textContent=group.length>1 ? (idx+1)+' / '+group.length : '';
+    prev.hidden=next.hidden=group.length<2;
+    prev.disabled=idx===0; next.disabled=idx===group.length-1;
+  }
   function open(btn){
-    var img=btn.querySelector('img');
-    var fig=btn.closest('figure');
-    var cap=fig&&fig.querySelector('.cap');
-    lbi.src=img.src; lbi.alt=img.alt;
-    lbc.textContent=cap?cap.textContent.trim():'';
-    lb.setAttribute('open',''); opener=btn; lbx.focus();
+    var scope=btn.closest('section')||document;
+    group=[].slice.call(scope.querySelectorAll('.shot'));
+    opener=btn; show(group.indexOf(btn));
+    lb.setAttribute('open',''); document.body.style.overflow='hidden'; lbx.focus();
   }
   function close(){
     lb.removeAttribute('open'); lbi.removeAttribute('src');
+    document.body.style.overflow='';
     if(opener){opener.focus(); opener=null;}
   }
-  document.querySelectorAll('.shot').forEach(function(b){
-    b.addEventListener('click',function(){open(b);});
+  function step(d){ var n=idx+d; if(n>=0 && n<group.length) show(n); }
+
+  document.querySelectorAll('.shot').forEach(function(btn){
+    btn.addEventListener('click',function(){open(btn);});
   });
   lbx.addEventListener('click',close);
-  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  prev.addEventListener('click',function(){step(-1);});
+  next.addEventListener('click',function(){step(1);});
+  lb.addEventListener('click',function(e){ if(e.target===lb) close(); });
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&lb.hasAttribute('open'))close();
+    if(!lb.hasAttribute('open')) return;
+    if(e.key==='Escape') close();
+    else if(e.key==='ArrowLeft') step(-1);
+    else if(e.key==='ArrowRight') step(1);
   });
-
-  var items=document.querySelectorAll('.rv');
-  if(!('IntersectionObserver' in window)){
-    items.forEach(function(e){e.classList.add('in');}); return;
-  }
-  var io=new IntersectionObserver(function(en){
-    en.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}
-    });
-  },{rootMargin:'0px 0px -6% 0px',threshold:.04});
-  items.forEach(function(e){io.observe(e);});
 })();
 </script>
 

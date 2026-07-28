@@ -43,6 +43,8 @@ a:hover{text-decoration:underline}
 nav{position:sticky;top:0;z-index:60;height:48px;
   background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+.skiplink{position:absolute;left:-9999px;top:0;z-index:99;background:var(--k);color:#fff;padding:.7rem 1.1rem;border-radius:0 0 8px 0;font-size:14px}
+.skiplink:focus{left:0;text-decoration:none}
 .navin{max-width:1024px;margin:0 auto;height:100%;padding:0 var(--pad);
   display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .navin a.home{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--ink);
@@ -55,14 +57,14 @@ nav{position:sticky;top:0;z-index:60;height:48px;
 
 header.post{padding:clamp(3.5rem,9vw,6rem) 0 clamp(1.75rem,4vw,2.5rem)}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink3);margin-bottom:1.25rem}
+  color:var(--ink2);margin-bottom:1.25rem}
 h1{font-size:clamp(34px,6.4vw,56px);line-height:1.06;letter-spacing:-.028em;
   font-weight:700;text-wrap:balance}
 .standfirst{font-size:clamp(19px,2.4vw,23px);line-height:1.5;color:var(--ink2);
   margin-top:1.35rem;letter-spacing:-.014em}
 .byline{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:1.75rem;
   padding-top:1.35rem;border-top:1px solid var(--line);
-  font-size:14px;color:var(--ink3);font-family:var(--mono);letter-spacing:.02em}
+  font-size:14px;color:var(--ink2);font-family:var(--mono);letter-spacing:.02em}
 .byline b{font-weight:500;color:var(--ink2)}
 
 article{padding-bottom:clamp(3rem,7vw,5rem)}
@@ -87,7 +89,7 @@ hr{border:0;border-top:1px solid var(--line);margin:clamp(2.75rem,6vw,4rem) 0}
 .callout p{margin:0}
 .callout p + p{margin-top:.9rem}
 .callout .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:.6rem}
+  text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:.6rem}
 
 .end{background:var(--k);color:var(--pale);margin-top:clamp(2rem,5vw,3rem);
   padding:clamp(3rem,7vw,4.5rem) 0}
@@ -103,13 +105,14 @@ hr{border:0;border-top:1px solid var(--line);margin:clamp(2.75rem,6vw,4rem) 0}
 .btn2{background:none;border:1px solid #48484a;color:var(--pale)}
 .btn2:hover{background:rgba(255,255,255,.08)}
 
-footer{padding:clamp(2.5rem,5vw,3.5rem) 0;font-size:13px;color:var(--ink3);
+footer{padding:clamp(2.5rem,5vw,3.5rem) 0;font-size:13px;color:var(--ink2);
   background:var(--w2);border-top:1px solid var(--line)}
 footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
+<a class="skiplink" href="#start">Skip to the essay</a>
 <nav><div class="navin">
   <a class="home" href="/">Andrew Gaston</a>
   <a class="back" href="/">Back to the work</a>
@@ -125,7 +128,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     <span>&middot;</span> <span>7 min read</span></p>
 </div></header>
 
-<article><div class="wrap">
+<main id="start"><article><div class="wrap">
 
   <p>I'm a registered nurse. I run operations at a small primary care practice in
     Philadelphia. Over the last few months I've had AI build an EMR for that practice: about
@@ -251,7 +254,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wra
     system around a tool, which is a different skill, and one I think a lot more people are
     about to need.</p>
 
-</div></article>
+</div></article></main>
 
 <section class="end"><div class="wrap">
   <h3>I want to build the next one with other people.</h3>
